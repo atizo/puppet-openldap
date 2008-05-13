@@ -6,7 +6,7 @@ class openldap::client inherits openldap {
         owner => root, group => 0, mode => 0644;
     }
 
-    file{"/etc/pam.d/system-auth", 
+    file{"/etc/pam.d/system-auth":
         ensure => "/etc/pam.d/system-auth-ac",
         require => [ File["/etc/pam.d/system-auth-ac"], Package[openldap] ],
     }
@@ -52,7 +52,7 @@ class openldap::client inherits openldap {
                     "puppet://$server/files/openldap/${operatingsystem}/nsswitch.conf",
                     "puppet://$server/files/openldap/nsswitch.conf",
                     "puppet://$server/openldap/${operatingsystem}/nsswitch.conf",
-                    "puppet://$server/openldap/nsswitch.conf" ]
+                    "puppet://$server/openldap/nsswitch.conf" ],
         require => Package[openldap],
         owner => root, group => 0, mode => 0644;
     }
