@@ -38,12 +38,18 @@ class openldap::client inherits openldap {
     }
 
     $real_ldap_server = $ldap_server ? {
-        '' => 'proximai.rz.puzzle.ch',
+        '' => 'proximai.worldweb2000.com',
         default => $ldap_server
     }
 
     file{"/etc/ldap.conf":
         content => template("openldap/${operatingsystem}/ldap.conf.erb"),
+        require => File["/etc/pam.d/system-auth-ac"],
+        owner => root, group => 0, mode => 0644;
+    }
+    file{"/etc/openldap/ldap.conf":
+        content => template("openldap/${operatingsystem}/openldap/ldap.conf.erb"),
+        require => Package[openldap],
         owner => root, group => 0, mode => 0644;
     }
 
@@ -53,7 +59,7 @@ class openldap::client inherits openldap {
                     "puppet://$server/files/openldap/nsswitch.conf",
                     "puppet://$server/openldap/${operatingsystem}/nsswitch.conf",
                     "puppet://$server/openldap/nsswitch.conf" ],
-        require => Package[openldap],
+        require => File["/etc/pam.d/system-auth-ac"],
         owner => root, group => 0, mode => 0644;
     }
 }
