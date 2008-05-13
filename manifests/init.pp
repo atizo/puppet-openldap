@@ -11,7 +11,7 @@ class openldap {
 }
 
 class openldap::base {
-    package{openldap
+    package{openldap:
         ensure => present,
     }
 }
