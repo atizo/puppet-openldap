@@ -27,7 +27,7 @@ class openldap::client inherits openldap {
 
     # set variables
 
-    $real_ldap_base_dn = $ldap_base_dn ? {
+    $real_ldap_base = $ldap_base_dn ? {
         '' => 'dc=puzzle,dc=itc',
         default => $ldap_base_dn
     }
