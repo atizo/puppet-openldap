@@ -7,7 +7,7 @@
 
 # modules_dir { "openldap": }
 class openldap {
-    include open::base
+    include openldap::base
 }
 
 class openldap::base {
