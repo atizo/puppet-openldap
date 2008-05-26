@@ -62,8 +62,4 @@ class openldap::client inherits openldap {
         require => File["/etc/pam.d/system-auth-ac"],
         owner => root, group => 0, mode => 0644;
     }
-
-    if $use_shorewall {
-        include openldap::shorewall::client
-    }
 }
