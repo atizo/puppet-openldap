@@ -1,12 +1,19 @@
 # manifests/client.pp
 
 class openldap::client inherits openldap {
-    file{"/etc/openldap/cacerts/cacert.pem":
+    file{'/etc/openldap/cacerts/cacert.pem':
         source => "puppet://$server/files/openldap/cacerts/cacert.pem",
+        notify => Exec['create_hash_link'],
         owner => root, group => 0, mode => 0644;
     }
 
-    file{"/etc/pam.d/system-auth":
+    # clear all links, make hash link for the cert
+    exec{'create_hash_link':
+        command => 'cd /etc/openldap/cacerts/ && find -type l -exec rm {} \; && ln -s cacert.pem `openssl x509 -noout -hash < /etc/openldap/cacerts/cacert.pem`.0',
+        refreshonly => true,
+    }
+
+    file{'/etc/pam.d/system-auth':
         ensure => "/etc/pam.d/system-auth-ac",
         require => [ File["/etc/pam.d/system-auth-ac"], Package[openldap] ],
     }
