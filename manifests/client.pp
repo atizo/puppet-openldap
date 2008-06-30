@@ -24,9 +24,9 @@ class openldap::client inherits openldap {
     # --enablelocauthorize --kickstart
     file{"/etc/pam.d/system-auth-ac":
         source => [ "puppet://$server/files/openldap/${fqdn}/system-auth-ac",
-                    "puppet://$server/files/openldap/${operatingsystem}/system-auth-ac",
+                    "puppet://$server/files/openldap/system-auth-ac-${operatingsystem}",
                     "puppet://$server/files/openldap/system-auth-ac",
-                    "puppet://$server/openldap/${operatingsystem}/system-auth-ac",
+                    "puppet://$server/openldap/system-auth-ac.${operatingsystem}",
                     "puppet://$server/openldap/system-auth-ac" ],
         require => Package[openldap],
         owner => root, group => 0, mode => 0644;
