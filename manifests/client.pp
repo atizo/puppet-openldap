@@ -60,6 +60,8 @@ class openldap::client inherits openldap {
         owner => root, group => 0, mode => 0644;
     }
 
+    include nscd
+
     file{"/etc/nsswitch.conf":
         source => [ "puppet://$server/files/openldap/${fqdn}/nsswitch.conf",
                     "puppet://$server/files/openldap/${operatingsystem}/nsswitch.conf",
@@ -69,11 +71,5 @@ class openldap::client inherits openldap {
         require => File["/etc/pam.d/system-auth-ac"],
         notify => Service['nscd'],
         owner => root, group => 0, mode => 0644;
-    }
-
-    service{'nscd':
-        ensure => running,
-        enable => true,
-        hasstatus => true,
     }
 }
