@@ -60,12 +60,12 @@ class openldap::client(
     ],
   }
   file{"/etc/ldap.conf":
-    content => template("site-openldap/client/ldap.conf.erb"),
+    content => template("openldap/client/ldap.conf.erb"),
     require => File["/etc/pam.d/system-auth-ac"],
     owner => root, group => 0, mode => 0644;
   }
   file{"/etc/openldap/ldap.conf":
-    content => template("site-openldap/client/ldap.conf.erb"),
+    content => template("openldap/client/ldap.conf.erb"),
     require => Package['openldap'],
     owner => root, group => 0, mode => 0644;
   }
