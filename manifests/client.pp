@@ -1,6 +1,6 @@
 class openldap::client(
   $ldap_server,
-  $base_dn,
+  $base,
   $use_cacert_ca = false,
   $sudoers_base = false
 ) {
