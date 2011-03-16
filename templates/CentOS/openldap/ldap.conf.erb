@@ -14,6 +14,6 @@
 #SIZELIMIT      12
 #TIMELIMIT      15
 #DEREF          never
-URI ldap://<%= real_ldap_server %>
-BASE <%= real_ldap_base %>
+URI ldap://<%= ldap_server %>
+BASE <%= base_dn %>
 TLS_CACERTDIR /etc/openldap/cacerts

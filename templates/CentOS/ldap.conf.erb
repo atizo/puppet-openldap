@@ -21,7 +21,7 @@
 #host 127.0.0.1
 
 # The distinguished name of the search base.
-base <%= real_ldap_base %> 
+base <%= base_dn %> 
 
 # Another way to specify your LDAP server is to provide an
 # uri with the server name. This allows to use
@@ -298,11 +298,13 @@ nss_initgroups_ignoreusers root,ldap,named,avahi,haldaemon,dbus,radvd,tomcat,rad
 # at present and does not support password policy control
 #pam_sasl_mech DIGEST-MD5
 bind_policy soft
-<% unless real_ldap_sudoers == 'false' -%>
-sudoers_base   <%= real_ldap_sudoers %>
+<% if sudoers_base -%>
+sudoers_base  <%= sudoers_base %>
 <% end -%>
+<% if pam_check_host_attr -%>
 pam_check_host_attr yes
-uri ldap://<%= real_ldap_server %>
+<% end -%>
+uri ldap://<%= ldap_server %>
 ssl start_tls
 tls_cacertdir /etc/openldap/cacerts
 pam_password md5

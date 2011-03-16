@@ -1,12 +1,26 @@
-class openldap::client {
+class openldap::client(
+  $ldap_server,
+  $base_dn,
+  $use_cacert_ca = false,
+  $sudoers_base = false
+) {
   include openldap
   include nscd
 
-  file{'/etc/openldap/cacerts/cacert.pem':
-    source => "puppet://$server/modules/site-openldap/cacerts/cacert.pem",
-    owner => root, group => 0, mode => 0644;
+  if $use_cacert_ca {
+    include cacert
+    file{'/etc/openldap/cacerts/cacert.pem':
+      ensure => '/etc/pki/tls/certs/cacert-ca-class-1.crt',
+      owner => root, group => 0, mode => 0644;
+    }
+  } else {
+    file{'/etc/openldap/cacerts/cacert.pem':
+      source => "puppet://$server/modules/site-openldap/cacerts/cacert.pem",
+      owner => root, group => 0, mode => 0644;
+    }
   }
-  if defined(Service['xinetd']) {
+
+  if defined(Service['nscd']) {
     File['/etc/openldap/cacerts/cacert.pem'] {
       notify => [
         Service['nscd'],
@@ -15,7 +29,7 @@ class openldap::client {
     }
   } else {
     File['/etc/openldap/cacerts/cacert.pem'] {
-      notify =>  Exec['create_hash_link'],
+      notify => Exec['create_hash_link'],
     }
   }
   
@@ -25,9 +39,9 @@ class openldap::client {
     refreshonly => true,
   }
 
-  # this command is used to geneare the following files
+  # this command is used to generate the following files
   # authconfig --useshadow --enableshadow --usemd5 --enablemd5 --enableldap \
-  # --enableldaptls --enableldapauth --ldapserver=$ldapserver --ldapbasedn=dc=puzzle,dc=itc \
+  # --enableldaptls --enableldapauth --ldapserver=$ldap_server --ldapbasedn=$base_dn \
   # --enablelocauthorize --kickstart
   file{'/etc/pam.d/system-auth-ac':
     source => [
