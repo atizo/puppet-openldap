@@ -65,7 +65,7 @@ class openldap::client(
     owner => root, group => 0, mode => 0644;
   }
   file{"/etc/openldap/ldap.conf":
-    content => template("openldap/client/ldap.conf.erb"),
+    content => template("openldap/client/openldap/ldap.conf.erb"),
     require => Package['openldap'],
     owner => root, group => 0, mode => 0644;
   }
