@@ -2,7 +2,8 @@ class openldap::client(
   $ldap_server,
   $base,
   $use_cacert_ca = false,
-  $sudoers_base = false
+  $sudoers_base = false,
+  $pam_check_host_attr = false
 ) {
   include openldap
   include nscd
