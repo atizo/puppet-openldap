@@ -8,10 +8,12 @@ auth        sufficient    pam_ldap.so use_first_pass
 auth        required      pam_deny.so
 
 account     required      pam_unix.so broken_shadow
+account     sufficient    pam_localuser.so
 account     sufficient    pam_succeed_if.so uid < 500 quiet
 account     [default=bad success=ok user_unknown=ignore] pam_ldap.so
 account     required      pam_permit.so
 
+password    requisite     pam_cracklib.so try_first_pass retry=3 type=
 password    sufficient    pam_unix.so md5 shadow nullok try_first_pass use_authtok
 password    sufficient    pam_ldap.so use_authtok
 password    required      pam_deny.so
