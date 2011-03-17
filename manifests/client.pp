@@ -35,8 +35,9 @@ class openldap::client(
   }
   
   # clear all links, make hash link for the cert
+  $cacerts = '/etc/openldap/cacerts'
   exec{'create_hash_link':
-    command => 'cd /etc/openldap/cacerts && find -type l -exec rm {} \; && ln -s cacert.pem `openssl x509 -noout -hash < /etc/openldap/cacerts/cacert.pem`.0',
+    command => "find $cacerts -type l -exec rm {} \; && ln -s $cacerts/cacert.pem $cacerts/`openssl x509 -noout -hash < /etc/openldap/cacerts/cacert.pem`.0",
     refreshonly => true,
   }
 
